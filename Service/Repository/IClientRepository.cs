@@ -13,7 +13,7 @@ namespace Api_work.Service.Repository
         
         Task<bool> Delete(int Id);
 
-        Task<List<Client>> GetList();
+        Task<PageDate<Client>> GetList(PagesParams paramers);
 
         Task<Client> GetClient(int id);
 
@@ -29,13 +29,42 @@ namespace Api_work.Service.Repository
             _connectStr = connect;
         }
 
-        public async Task<List<Client>> GetList()
+        public async Task<PageDate<Client>> GetList(PagesParams paramers)
         {
-            var sql = @"Select Id, Name, Mark from clients";
+            var sql = @"Select Id, Name, Mark 
+                        from clients
+                        order by Id
+                        LIMIT @getCount
+                        OFFSET @skipCount;
+                        ";
+            var skipCount = (paramers.PageNumber - 1) * paramers.PageSize;
+            List<Client> clients = new List<Client>();
+
             using(var bd = new SqliteConnection(_connectStr))
             {
-               return (await bd.QueryAsync<Client>(sql)).AsList();
+               clients = (await bd.QueryAsync<Client>(sql, 
+                    new { 
+                        skipCount = skipCount,
+                        getCount = paramers.PageSize
+                    }
+                    )).AsList();
             }
+
+            int count;
+            sql = @"select count(*) from clients";
+
+            using(var bd = new SqliteConnection(_connectStr))
+            {
+                count = bd.QueryFirst<int>(sql);
+            }
+
+            return new PageDate<Client>() 
+            {
+                CurrentPage = paramers.PageNumber,
+                Items = clients,
+                PageSize = paramers.PageSize,
+                CountPage = (int)Math.Ceiling( count / (double) paramers.PageSize )
+            };
         }
 
         public async Task<bool> Create(Client client)

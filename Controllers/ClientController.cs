@@ -22,9 +22,9 @@ namespace Api_work.Controllers
         }
 
         [HttpGet]
-        public async Task<List<Client>> GetClients()
+        public async Task<PageDate<Client>> GetClients([FromQuery] PagesParams pagesParams)
         {
-           return await _repo.GetList();
+           return await _repo.GetList(pagesParams);
         }
 
         [HttpGet("{id}")]

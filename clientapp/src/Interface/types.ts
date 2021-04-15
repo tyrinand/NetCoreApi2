@@ -37,3 +37,11 @@ export interface IBtnEditProprs {
 export interface RouteParams {
     id? : string,
 }
+
+
+export interface PagesData<T> {
+    currentPage : number,
+    countPage : number,
+    pageSize : number,
+    items : Array<T>
+}
