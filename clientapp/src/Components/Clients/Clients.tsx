@@ -1,6 +1,6 @@
 import { get } from './../../Utils/httpFetch';
 import {useState, useEffect } from 'react';
-import {IClient, IComponentStatus, baseUrl} from '../../Interface/types';
+import {IClient, IComponentStatus, baseUrl, PagesData, PageParams} from '../../Interface/types';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -14,39 +14,69 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import DeleteBtn from './../Buttons/DeleteBtn';
 import CreateBtn from './../Buttons/CreateBtn';
 import EditBtn from './../Buttons/EditBtn';
+import Pagination from '@material-ui/lab/Pagination';
+import { RouteComponentProps } from 'react-router-dom';
+import PaginationItem from '@material-ui/lab/PaginationItem';
+import { NavLink } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles({
   titles :
   {
-    fontWeight : 'bold'
+    fontWeight : 'bold',
+    width : "33%"
   }
 });
 
-const Clients = () => {
+const Clients = (props : RouteComponentProps<PageParams>) => {
+    let history = useHistory();
+
+    const paramPage = props.match.params.page;
+    let page : number;
+
+    if( (paramPage != null || paramPage != undefined) )
+    {
+      page = Number(props.match.params.page)
+    }
+    else
+    {
+      page = 1;
+    }
+
 
     const [clients, setClients] = useState<Array<IClient> | null>(null);
     const [error, setError] = useState<Error | null>(null);
     const [status, setStatus] = useState<IComponentStatus>('idle');
+    const [countPage, setCountPage] = useState<number>(0);
     const classes = useStyles();
 
     useEffect( () => {
-        get<Array<IClient>>(baseUrl + 'Client')
-        .then( (response : any) => {
-            setClients(response);
+        get<PagesData<IClient>>(baseUrl + 'Client/?PageNumber=' + page)
+        .then( (response : PagesData<IClient> ) => {
+            setClients(response.items);
+            setCountPage(response.countPage);
             setStatus('success');
         })
         .catch( (error : any) =>{
             setError(error);
             setStatus('error');
         })
-    }, [] )
+    }, [page] )
 
 
     const updateList = (id : number) : void => {
         if(clients != null)
         {
-          const newArray : Array<IClient> = clients?.filter(x => x.id != id);
-          setClients(newArray);
+          const newArray : Array<IClient> = clients?.filter(x => x.id !== id);
+          if(newArray.length > 0)
+          {
+            setClients(newArray);
+          }
+          else
+          {
+            const url : string = '/clients/page/' + (page - 1);
+            history.push(url);
+          }
         }
     }
 
@@ -60,7 +90,20 @@ const Clients = () => {
         <CircularProgress disableShrink />
       </Grid>);
     }
-        
+     
+    
+
+    if(status === "success" && clients != null && clients.length === 0)
+    {
+      return (
+        <Grid container spacing={0} justify="center">
+          <span>Нет данных</span>
+          <br/> <br/>
+          <CreateBtn url = "clients"/>
+        </Grid>
+      );
+    }
+
 
     if(status === "success" && clients != null)
     {
@@ -102,6 +145,20 @@ const Clients = () => {
     }
               <br/>
               <CreateBtn url = "clients"/>
+              <br/>
+              <Grid container spacing={0} justify="center">
+              <Pagination
+                page = { page }
+                count = { countPage }
+                  renderItem={(item) => (
+                    <PaginationItem
+                      component={NavLink}
+                      to={"/clients/page/"+item.page}
+                      {...item}
+                />
+              )}
+            />
+              </Grid>
         </>
         )
     }

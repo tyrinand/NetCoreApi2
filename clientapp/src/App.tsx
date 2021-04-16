@@ -58,7 +58,8 @@ function App() {
         <Route path="/"       component={Info}  exact/>
         <Route path="/sales"  component={Sales} />
         <Route path="/soft"   component={Soft} />
-        <Route path="/clients" component={Clients} exact/>
+        <Route path="/clients" component={Clients} exact />
+        <Route path="/clients/page/:page" component={Clients} />
         <Route path="/clients/create" component={FormClient} />
         <Route path="/clients/edit/:id" component={FormClient} />
         <Route  component={Info} />

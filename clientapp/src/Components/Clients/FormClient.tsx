@@ -33,6 +33,9 @@ function FormClient(props : RouteComponentProps<RouteParams>) {
     const [client, setClient] = useState<IClient>( {mark : 1, name : "", id : 0} );
     const [targetUrl, setTargetUrl ] = useState<string>(`${baseUrl}Client`);
     const [editMode, setEditMode] = useState<boolean>(false);
+    const [showMessage, setShowMessage] = useState(false); // вывод подсказки 
+    const [valide, setValide] = useState<boolean>(true); // валидность формы 
+
 
     const clientId = props.match.params.id;
     const currentPath = props.location.pathname;  
@@ -52,14 +55,12 @@ function FormClient(props : RouteComponentProps<RouteParams>) {
         })
     }
 
-    const [showMessage, setShowMessage] = useState(false); // вывод подсказки 
-    const [novalide, setNoValide] = useState<boolean>(false); // валидность формы 
+
 
     const handelOnChange = (e : React.ChangeEvent<HTMLInputElement>) =>{
         const {target : {value : name}} = e;
         const newClient = {...client, name : name};
         setClient(newClient);
-        CheckValide();
     }
 
     const handelOnChangeMark = (event: object, value: number | number[]) =>
@@ -106,7 +107,7 @@ function FormClient(props : RouteComponentProps<RouteParams>) {
 
     const handelCreateClient = (e :React.MouseEvent<HTMLButtonElement>) => {
        
-        if( CheckValide() )
+        if( !CheckValide() )
             return;
        
         editMode == true ?  UpdateClinet(client) : CreateClient(client);
@@ -121,8 +122,8 @@ function FormClient(props : RouteComponentProps<RouteParams>) {
     }
 
     const CheckValide = () =>{
-        const value : boolean = client.name.length === 0;
-        setNoValide(value);
+        const value : boolean = client.name.length != 0;
+        setValide(value);
         return value;
     }
 
@@ -144,7 +145,7 @@ if(status === "success" || status === 'idle')
                 <Grid item md={8}>
                     <form autoComplete="off">
                         <TextField 
-                            error={novalide}
+                            error={ (valide || client.name.length > 0) ? false : true}
                             id="userName" 
                             label="ФИО" 
                             placeholder="Введите ФИО клиента"

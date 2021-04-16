@@ -38,6 +38,9 @@ export interface RouteParams {
     id? : string,
 }
 
+export interface PageParams {
+    page? : string
+}
 
 export interface PagesData<T> {
     currentPage : number,
