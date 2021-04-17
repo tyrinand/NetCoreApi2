@@ -5,7 +5,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
-import Soft from './Components/Soft/Soft';
+import Softs from './Components/Softs/Softs';
 import Sales from './Components/Sales/Sales';
 import Clients from './Components/Clients/Clients';
 import './App.css';
@@ -57,11 +57,15 @@ function App() {
     <Switch>
         <Route path="/"       component={Info}  exact/>
         <Route path="/sales"  component={Sales} />
-        <Route path="/soft"   component={Soft} />
+        
         <Route path="/clients" component={Clients} exact />
         <Route path="/clients/page/:page" component={Clients} />
         <Route path="/clients/create" component={FormClient} />
         <Route path="/clients/edit/:id" component={FormClient} />
+
+        <Route path="/soft"   component={Softs} />
+        <Route path="/soft/page/:page" component={Softs} />
+
         <Route  component={Info} />
       </Switch>
     </Grid>

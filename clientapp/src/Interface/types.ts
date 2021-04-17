@@ -14,6 +14,15 @@ export interface IClient
     mark : number
 }
 
+export interface ISoft
+{
+    id : number,
+    name : string,
+    description : string,
+    price : number,
+    count : number
+}
+
 export type IComponentStatus = 'idle' | 'pending' | 'success' | 'error';
 
 

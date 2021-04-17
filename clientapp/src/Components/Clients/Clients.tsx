@@ -17,7 +17,6 @@ import PaginationBtn from './../Buttons/PaginationBtn';
 import EditBtn from './../Buttons/EditBtn';
 import { RouteComponentProps } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
-import VisibilityIcon from '@material-ui/icons/Visibility';
 import ClientModal from './ClientModal';
 
 const useStyles = makeStyles({
@@ -59,7 +58,7 @@ const Clients = (props : RouteComponentProps<PageParams>) => {
     }, [page] )
 
 
-    const updateList = (id : number) : void => {
+    const dropInList = (id : number) : void => {
         if(clients != null)
         {
           const newArray : Array<IClient> = clients?.filter(x => x.id !== id);
@@ -104,16 +103,15 @@ const Clients = (props : RouteComponentProps<PageParams>) => {
     {
         return(
             <>
-              {clients.length > 0 &&
                 <TableContainer component={Paper}>
-                <Table  size="small">
-                  <TableHead>
-                    <TableRow >
-                      <TableCell align="center"  className={classes.titles}>ФИО</TableCell>
-                      <TableCell align="center"  className={classes.titles}>Оценка</TableCell>
-                      <TableCell align="center"  className={classes.titles}>Действие</TableCell>
-                    </TableRow>
-                  </TableHead>
+                  <Table  size="small">
+                    <TableHead>
+                      <TableRow >
+                        <TableCell align="center"  className={classes.titles}>ФИО</TableCell>
+                        <TableCell align="center"  className={classes.titles}>Оценка</TableCell>
+                        <TableCell align="center"  className={classes.titles}>Действие</TableCell>
+                      </TableRow>
+                    </TableHead>
                   <TableBody>
                     {clients.map((item) => (
                       <TableRow key={item.id}>
@@ -132,7 +130,7 @@ const Clients = (props : RouteComponentProps<PageParams>) => {
                           <DeleteBtn 
                             id = {item.id}
                             url = "Client"
-                            updateList = {updateList}
+                            updateList = {dropInList}
                             setError = {setError}
                             setStatus = {setStatus}
                             className = {classes.icons}
@@ -145,7 +143,6 @@ const Clients = (props : RouteComponentProps<PageParams>) => {
                   </TableBody>
                 </Table>
               </TableContainer>
-              }
               
               <br/>
               <CreateBtn url = "clients"/>
