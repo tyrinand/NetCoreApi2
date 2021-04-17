@@ -1,17 +1,17 @@
 import DeleteIcon from '@material-ui/icons/Delete';
-import { makeStyles } from '@material-ui/core/styles';
-import {IBtnDeleteProprs, baseUrl} from './../../Interface/types';
+import {baseUrl, IComponentStatus} from './../../Interface/types';
 import {deleteData} from './../../Utils/httpFetch';
 
-const useStyles = makeStyles({
-    icons : {
-      cursor : 'pointer'
-    }
-  });
-
+interface IBtnDeleteProprs {
+    id : number,
+    url : string,
+    updateList (id : number) : void,
+    setError (error : Error) : void,
+    setStatus (status : IComponentStatus) : void,
+    className : string
+}
 
 const DeleteBtn = (props : IBtnDeleteProprs) =>{
-    const classes = useStyles();
 
 const handelClick = () =>{
     props.setStatus('pending');
@@ -29,7 +29,7 @@ const handelClick = () =>{
 
     return(
         <DeleteIcon 
-            className={classes.icons}
+            className={props.className}
             onClick = {handelClick}
         />
     )

@@ -17,23 +17,6 @@ export interface IClient
 export type IComponentStatus = 'idle' | 'pending' | 'success' | 'error';
 
 
-export interface IBtnDeleteProprs {
-    id : number,
-    url : string,
-    updateList (id : number) : void,
-    setError (error : Error) : void,
-    setStatus (status : IComponentStatus) : void
-}
-
-export interface IBtnCreate{
-    url : string
-}
-
-export interface IBtnEditProprs {
-    url : string,
-    id : number
-}
-
 export interface RouteParams {
     id? : string,
 }

@@ -13,18 +13,21 @@ import Grid from '@material-ui/core/Grid';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import DeleteBtn from './../Buttons/DeleteBtn';
 import CreateBtn from './../Buttons/CreateBtn';
+import PaginationBtn from './../Buttons/PaginationBtn';
 import EditBtn from './../Buttons/EditBtn';
-import Pagination from '@material-ui/lab/Pagination';
 import { RouteComponentProps } from 'react-router-dom';
-import PaginationItem from '@material-ui/lab/PaginationItem';
-import { NavLink } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import ClientModal from './ClientModal';
 
 const useStyles = makeStyles({
   titles :
   {
     fontWeight : 'bold',
     width : "33%"
+  },
+  icons : {
+    cursor : 'pointer'
   }
 });
 
@@ -32,17 +35,8 @@ const Clients = (props : RouteComponentProps<PageParams>) => {
     let history = useHistory();
 
     const paramPage = props.match.params.page;
-    let page : number;
-
-    if( (paramPage != null || paramPage != undefined) )
-    {
-      page = Number(props.match.params.page)
-    }
-    else
-    {
-      page = 1;
-    }
-
+    let page : number = ( (paramPage != null || paramPage != undefined) ) ?  Number(props.match.params.page) : 1;
+    const pageSize = 2; // для теста
 
     const [clients, setClients] = useState<Array<IClient> | null>(null);
     const [error, setError] = useState<Error | null>(null);
@@ -51,7 +45,8 @@ const Clients = (props : RouteComponentProps<PageParams>) => {
     const classes = useStyles();
 
     useEffect( () => {
-        get<PagesData<IClient>>(baseUrl + 'Client/?PageNumber=' + page)
+     
+        get<PagesData<IClient>>( `${baseUrl}Client/?PageNumber=${page}&PageSize=${pageSize}`)
         .then( (response : PagesData<IClient> ) => {
             setClients(response.items);
             setCountPage(response.countPage);
@@ -125,9 +120,14 @@ const Clients = (props : RouteComponentProps<PageParams>) => {
                         <TableCell align="center">{item.name}</TableCell>
                         <TableCell align="center">{item.mark}</TableCell>
                         <TableCell align="center">
+                          <ClientModal 
+                            iconClassName  = {classes.icons}
+                            client = {item}    
+                          />
                           <EditBtn 
                             id = {item.id}
                             url = "clients"
+                            className = {classes.icons}
                           />
                           <DeleteBtn 
                             id = {item.id}
@@ -135,33 +135,29 @@ const Clients = (props : RouteComponentProps<PageParams>) => {
                             updateList = {updateList}
                             setError = {setError}
                             setStatus = {setStatus}
+                            className = {classes.icons}
                           />
+                         
+
                         </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
                 </Table>
               </TableContainer>
-    }
+              }
+              
               <br/>
               <CreateBtn url = "clients"/>
-              <br/>
-              <Grid container spacing={0} justify="center">
-              <Pagination
+              <br/><br/>
+              <PaginationBtn 
+                to = "clients"
                 page = { page }
                 count = { countPage }
-                  renderItem={(item) => (
-                    <PaginationItem
-                      component={NavLink}
-                      to={"/clients/page/"+item.page}
-                      {...item}
-                />
-              )}
-            />
-              </Grid>
+              />
+              
         </>
-        )
-    }
+        )}
 
     return(
         <div>440</div>

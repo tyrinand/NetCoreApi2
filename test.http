@@ -1,6 +1,6 @@
 
 ###
- http://localhost:5000/Client/?PageNumber=1
+ http://localhost:5000/Client/?PageNumber=1&PageSize=2
  
 
 

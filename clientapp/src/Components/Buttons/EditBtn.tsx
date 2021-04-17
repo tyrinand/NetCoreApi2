@@ -1,27 +1,25 @@
-import {IBtnEditProprs} from './../../Interface/types';
 import EditIcon from '@material-ui/icons/Edit';
-import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 
-
-const useStyles = makeStyles({
-    icons : {
-      cursor : 'pointer'
-    }
-  });
-
+interface IBtnEditProprs {
+    url : string,
+    id : number,
+    className : string
+}
 
 const EditBtn = (props : IBtnEditProprs) =>{
-    const classes = useStyles();
     let history = useHistory();
-    const url = `/${props.url}/edit/${props.id}`;
-
-    const handelClick = () => {  
+    
+    const handelClick = () => {
+      const url = `/${props.url}/edit/${props.id}`;  
       history.push(url);
     }
 
     return(
-         <EditIcon  className={classes.icons} onClick={handelClick}/>
+        <EditIcon  
+         className={props.className} 
+         onClick={handelClick}
+        />
     )
 }
 

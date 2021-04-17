@@ -1,9 +1,10 @@
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import {IBtnCreate} from '../../Interface/types';
 import { NavLink } from 'react-router-dom';
 
-//to="/clients/create"
+interface IBtnCreate{
+  url : string
+}
 
 const CreateBtn = (props : IBtnCreate) => {
     const url = `/${props.url}/create`;
