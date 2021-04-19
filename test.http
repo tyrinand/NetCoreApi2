@@ -1,14 +1,15 @@
 
 ###
- http://localhost:5000/Client/?PageNumber=1&PageSize=2
+ http://localhost:5000/api/client/?PageNumber=1&PageSize=2
  
 
 ###
- http://localhost:5000/Soft/?PageNumber=1&PageSize=2
+ http://localhost:5000/api/Soft/?PageNumber=1&PageSize=2
+ 
+
+###
+ http://localhost:5000/api/Soft/?PageNumber=2&PageSize=2
  
 
 
-
-###
- http://localhost:5000/Client/2
  

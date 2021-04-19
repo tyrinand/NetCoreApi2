@@ -10,6 +10,7 @@ import Sales from './Components/Sales/Sales';
 import Clients from './Components/Clients/Clients';
 import './App.css';
 import FormClient from '../src/Components/Clients/FormClient';
+import { reactUrlClients, reactUrlSofts } from './Interface/types';
 
 
 const useStyles = makeStyles( (theme) =>  ({
@@ -33,6 +34,8 @@ const useStyles = makeStyles( (theme) =>  ({
   },
 }));
 
+
+
 function App() {
   const classes = useStyles();
   return (
@@ -45,8 +48,8 @@ function App() {
           <Toolbar className={classes.toolbar}>
             <NavLink className={classes.link} exact to="/">Инфо</NavLink>
             <NavLink className={classes.link} to="/sales">Продажи</NavLink>
-            <NavLink className={classes.link} to="/soft">Софт</NavLink>
-            <NavLink className={classes.link} to="/clients">Клиенты</NavLink>
+            <NavLink className={classes.link} to = {`/${reactUrlSofts}`}>Софт</NavLink>
+            <NavLink className={classes.link} to = {`/${reactUrlClients}`} >Клиенты</NavLink>
         </Toolbar>
       </AppBar>
     </Grid>
@@ -58,13 +61,13 @@ function App() {
         <Route path="/"       component={Info}  exact/>
         <Route path="/sales"  component={Sales} />
         
-        <Route path="/clients" component={Clients} exact />
-        <Route path="/clients/page/:page" component={Clients} />
-        <Route path="/clients/create" component={FormClient} />
-        <Route path="/clients/edit/:id" component={FormClient} />
+        <Route path = {`/${reactUrlClients}`}            component = {Clients} exact />
+        <Route path = {`/${reactUrlClients}/page/:page`} component = {Clients} />
+        <Route path = {`/${reactUrlClients}/create`}     component = {FormClient} />
+        <Route path = {`/${reactUrlClients}/edit/:id`}   component = {FormClient} />
 
-        <Route path="/soft"   component={Softs} />
-        <Route path="/soft/page/:page" component={Softs} />
+        <Route path = {`/${reactUrlSofts}`}            component = {Softs} exact/>
+        <Route path = {`/${reactUrlSofts}/page/:page`} component={Softs} />
 
         <Route  component={Info} />
       </Switch>

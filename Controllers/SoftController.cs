@@ -7,7 +7,7 @@ using Api_work.Service.Repository;
 namespace Api_work.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("/api/[controller]")]
     public class SoftController : ControllerBase
     {
         private readonly ILogger<SoftController> _logger;

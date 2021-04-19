@@ -16,7 +16,7 @@ const DeleteBtn = (props : IBtnDeleteProprs) =>{
 const handelClick = () =>{
     props.setStatus('pending');
 
-        deleteData<boolean>(baseUrl + props.url +"/" + props.id)
+        deleteData<boolean>(`${baseUrl}/${props.url}/${props.id}`)
         .then( (response : any) => {
             props.setStatus('success');
             props.updateList(props.id);

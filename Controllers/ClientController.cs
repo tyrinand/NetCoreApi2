@@ -10,7 +10,7 @@ using Api_work.Service.Repository;
 namespace Api_work.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("/api/[controller]")]
     public class ClientController : ControllerBase
     {
         private readonly ILogger<ClientController> _logger;

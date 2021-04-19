@@ -1,7 +1,7 @@
 import {useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { RouteComponentProps } from 'react-router-dom';
-import { ISoft, IComponentStatus, baseUrl, PagesData, PageParams} from '../../Interface/types';
+import { ISoft, IComponentStatus, baseUrl, PagesData, PageParams, reactUrlSofts, serverUrlSofts} from '../../Interface/types';
 import { useHistory } from 'react-router-dom';
 import { get } from './../../Utils/httpFetch';
 import Grid from '@material-ui/core/Grid';
@@ -20,7 +20,7 @@ const useStyles = makeStyles({
     titles :
     {
         fontWeigt : "",
-        width : "25%"
+        width : "20%"
     },
     icons : {
         cursor : "pointer"
@@ -31,8 +31,9 @@ const useStyles = makeStyles({
 const Softs = (props : RouteComponentProps<PageParams>) => {
     let history = useHistory();
     
-    const paramPage = props.match.params.page;
-    let page : number = ((paramPage != null || paramPage != undefined))  ? Number(props.match.params.page) : 1;
+    const paramPage = props.match.params?.page;
+    console.log(paramPage);
+    let page : number = paramPage ?  Number(props.match.params.page) : 1;
     const pageSize = 2; // для теста
 
     const [softs, setSofts] = useState<Array<ISoft> | null>(null);
@@ -42,7 +43,7 @@ const Softs = (props : RouteComponentProps<PageParams>) => {
     const classes = useStyles();
 
     useEffect( () => {
-        get<PagesData<ISoft>>( `${baseUrl}Soft/?PageNumber=${page}&PageSize=${pageSize}` )
+        get<PagesData<ISoft>>( `${baseUrl}/${serverUrlSofts}/?PageNumber=${page}&PageSize=${pageSize}` )
         .then( (response : PagesData<ISoft>) => {
             setSofts(response.items);
             setCountPage(response.countPage);
@@ -78,7 +79,7 @@ const Softs = (props : RouteComponentProps<PageParams>) => {
             <Grid container spacing={0} justify="center">
                 <span>Нет данных</span>
                 <br/> <br/>
-                <CreateBtn url = "soft"/>
+                <CreateBtn url = {reactUrlSofts}/>
             </Grid>
         );
     }
@@ -115,10 +116,10 @@ const Softs = (props : RouteComponentProps<PageParams>) => {
                     </Table>
                 </TableContainer>
                 <br/>
-                <CreateBtn url = "soft"/>
+                <CreateBtn url = {reactUrlSofts}/>
                 <br/><br/>
                 <PaginationBtn 
-                    to = "soft"
+                    to = {reactUrlSofts}
                     page = { page }
                     count = { countPage }
                 />

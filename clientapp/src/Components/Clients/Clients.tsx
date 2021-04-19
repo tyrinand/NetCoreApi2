@@ -1,6 +1,6 @@
 import { get } from './../../Utils/httpFetch';
 import {useState, useEffect } from 'react';
-import {IClient, IComponentStatus, baseUrl, PagesData, PageParams} from '../../Interface/types';
+import {IClient, IComponentStatus, baseUrl, PagesData, PageParams, reactUrlClients, serverUrlClients} from '../../Interface/types';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -33,8 +33,9 @@ const useStyles = makeStyles({
 const Clients = (props : RouteComponentProps<PageParams>) => {
     let history = useHistory();
 
-    const paramPage = props.match.params.page;
-    let page : number = ( (paramPage != null || paramPage != undefined) ) ?  Number(props.match.params.page) : 1;
+    const paramPage = props.match.params?.page;
+
+    let page : number = paramPage ?  Number(props.match.params.page) : 1;
     const pageSize = 2; // для теста
 
     const [clients, setClients] = useState<Array<IClient> | null>(null);
@@ -45,7 +46,7 @@ const Clients = (props : RouteComponentProps<PageParams>) => {
 
     useEffect( () => {
      
-        get<PagesData<IClient>>( `${baseUrl}Client/?PageNumber=${page}&PageSize=${pageSize}`)
+        get<PagesData<IClient>>( `${baseUrl}/${serverUrlClients}/?PageNumber=${page}&PageSize=${pageSize}`)
         .then( (response : PagesData<IClient> ) => {
             setClients(response.items);
             setCountPage(response.countPage);
@@ -68,7 +69,7 @@ const Clients = (props : RouteComponentProps<PageParams>) => {
           }
           else
           {
-            const url : string = '/clients/page/' + (page - 1);
+            const url : string = `/${reactUrlClients}/page/` + (page - 1);
             history.push(url);
           }
         }
@@ -93,7 +94,7 @@ const Clients = (props : RouteComponentProps<PageParams>) => {
         <Grid container spacing={0} justify="center">
           <span>Нет данных</span>
           <br/> <br/>
-          <CreateBtn url = "clients"/>
+          <CreateBtn url = {reactUrlClients}/>
         </Grid>
       );
     }
@@ -124,12 +125,12 @@ const Clients = (props : RouteComponentProps<PageParams>) => {
                           />
                           <EditBtn 
                             id = {item.id}
-                            url = "clients"
+                            url = {reactUrlClients}
                             className = {classes.icons}
                           />
                           <DeleteBtn 
                             id = {item.id}
-                            url = "Client"
+                            url = {serverUrlClients}
                             updateList = {dropInList}
                             setError = {setError}
                             setStatus = {setStatus}
@@ -145,10 +146,10 @@ const Clients = (props : RouteComponentProps<PageParams>) => {
               </TableContainer>
               
               <br/>
-              <CreateBtn url = "clients"/>
+              <CreateBtn url = {reactUrlClients}/>
               <br/><br/>
               <PaginationBtn 
-                to = "clients"
+                to = {reactUrlClients}
                 page = { page }
                 count = { countPage }
               />
