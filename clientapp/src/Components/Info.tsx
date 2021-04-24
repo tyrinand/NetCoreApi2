@@ -6,7 +6,7 @@ function Info() {
         <ul>
             <li>React TS</li>
             <li>MATERIAL-UI</li>
-            <li>net core MVC</li>
+            <li>net core Api</li>
         </ul>
     </div>
 }

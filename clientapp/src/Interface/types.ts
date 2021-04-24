@@ -1,3 +1,5 @@
+import NumberFormat from 'react-number-format';
+
 export const baseUrl = 'https://localhost:5001';
 
 export const reactUrlClients :  string = "clients";
@@ -46,4 +48,10 @@ export interface PagesData<T> {
     countPage : number,
     pageSize : number,
     items : Array<T>
+}
+
+export interface NumberFormatCustomProps {
+    inputRef: (instance: NumberFormat | null) => void;
+    onChange: (event: { target: { name: string; value: string } }) => void;
+    name: string;
 }

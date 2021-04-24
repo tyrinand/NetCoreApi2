@@ -25,5 +25,29 @@ namespace Api_work.Controllers
         {
             return await _repo.GetList(pagesParams);
         }
+
+        [HttpGet("{id}")]
+        public async Task<Soft> GetSoft(int id)
+        {
+            return await _repo.GetSoft(id);
+        }
+
+        [HttpPost]
+        public async Task<bool> CreateSoft(Soft soft)
+        {
+            return await _repo.Create(soft);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<bool> DeleteClient(int id)
+        {
+            return await _repo.Delete(id);
+        }
+
+        [HttpPut]
+        public async Task<bool> Update(Soft soft)
+        {
+            return await _repo.Update(soft);
+        }
     }
 }

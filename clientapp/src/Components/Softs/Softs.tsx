@@ -15,6 +15,9 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import PaginationBtn from './../Buttons/PaginationBtn';
+import EditBtn from './../Buttons/EditBtn';
+import DeleteBtn from './../Buttons/DeleteBtn';
+import SoftModal from './SoftModal';
 
 const useStyles = makeStyles({
     titles :
@@ -32,7 +35,6 @@ const Softs = (props : RouteComponentProps<PageParams>) => {
     let history = useHistory();
     
     const paramPage = props.match.params?.page;
-    console.log(paramPage);
     let page : number = paramPage ?  Number(props.match.params.page) : 1;
     const pageSize = 2; // для теста
 
@@ -58,7 +60,20 @@ const Softs = (props : RouteComponentProps<PageParams>) => {
 
     //удаление из vies
     const dropInList = (id : number) : void => {
+        if(softs != null)
+        {
+            const newArray : Array<ISoft> = softs?.filter(x => x.id !== id);
 
+            if(newArray.length > 0)
+            {
+                setSofts(newArray);
+            }
+            else
+            {
+                const url : string = `/${reactUrlSofts}/page/${page - 1}`;
+                history.push(url);
+            }
+        }
     }
 
     if(status === 'error')
@@ -107,7 +122,23 @@ const Softs = (props : RouteComponentProps<PageParams>) => {
                                     <TableCell align="center">{item.price}</TableCell>
                                     <TableCell align="center">{item.count}</TableCell>
                                     <TableCell align="center">
-
+                                        <SoftModal 
+                                            iconClassName  = {classes.icons}
+                                            soft = {item}    
+                                        />
+                                        <EditBtn 
+                                            id = {item.id}
+                                            url = {reactUrlSofts}
+                                            className = {classes.icons}
+                                        />
+                                        <DeleteBtn 
+                                            id = {item.id}
+                                            url = {serverUrlSofts}
+                                            updateList = {dropInList}
+                                            setError = {setError}
+                                            setStatus = {setStatus}
+                                            className = {classes.icons}
+                                        />
                                     </TableCell>
                                 </TableRow>
                             ))

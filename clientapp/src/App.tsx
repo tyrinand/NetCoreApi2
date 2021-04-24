@@ -11,6 +11,7 @@ import Clients from './Components/Clients/Clients';
 import './App.css';
 import FormClient from '../src/Components/Clients/FormClient';
 import { reactUrlClients, reactUrlSofts } from './Interface/types';
+import FormSoft from './Components/Softs/FormSoft';
 
 
 const useStyles = makeStyles( (theme) =>  ({
@@ -66,8 +67,10 @@ function App() {
         <Route path = {`/${reactUrlClients}/create`}     component = {FormClient} />
         <Route path = {`/${reactUrlClients}/edit/:id`}   component = {FormClient} />
 
-        <Route path = {`/${reactUrlSofts}`}            component = {Softs} exact/>
-        <Route path = {`/${reactUrlSofts}/page/:page`} component={Softs} />
+        <Route path = {`/${reactUrlSofts}`}             component = {Softs} exact />
+        <Route path = {`/${reactUrlSofts}/page/:page`}  component = {Softs} />
+        <Route path = {`/${reactUrlSofts}/create`}      component = {FormSoft} />
+        <Route path = {`/${reactUrlSofts}/edit/:id`}    component = {FormSoft} />
 
         <Route  component={Info} />
       </Switch>

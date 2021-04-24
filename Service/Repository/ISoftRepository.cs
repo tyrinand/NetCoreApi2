@@ -10,6 +10,14 @@ namespace Api_work.Service.Repository
     public interface ISoftRepository
     {
         Task<PageDate<Soft>> GetList(PagesParams paramers);
+
+        Task<Soft> GetSoft(int id);
+
+        Task<bool> Create(Soft soft);
+
+        Task<bool> Delete(int id);
+
+        Task<bool> Update(Soft soft);
     }
     
     public class SoftRepository : ISoftRepository
@@ -20,6 +28,46 @@ namespace Api_work.Service.Repository
         public SoftRepository(string connect)
         {
             _connectStr = connect;
+        }
+
+        public async Task<Soft> GetSoft(int id)
+        {
+            var sql = @"Select Id, Name, Description, Price, Count  FROM softs where Id = @id";
+            
+            using(var bd = new SqliteConnection(_connectStr))
+            {
+                return await bd.QueryFirstAsync<Soft>(sql, new { id = id});
+            }
+        }
+
+        public async Task<bool> Create(Soft soft)
+        {
+            var sql = @"Insert into softs (Name, Description, Price, Count) values (@Name, @Description, @Price, @Count)";
+        
+            using(var bd = new SqliteConnection(_connectStr))
+            {
+                return (await bd.ExecuteAsync(sql, soft)) != 0;
+            }
+        }
+
+
+        public async Task<bool> Delete(int id)
+        {
+            var sql = "delete from softs where Id = @id";
+            
+            using(var bd = new SqliteConnection(_connectStr))
+            {
+                return (await bd.ExecuteAsync(sql, new{ id = id})) > 0;
+            }
+        }
+
+        public async Task<bool> Update(Soft soft)
+        {
+            var sql = @"update softs Set Name = @Name, Description = @Description, Price = @Price, Count = @Count where  Id = @Id";
+            using(var bd = new SqliteConnection(_connectStr))
+            {
+                return (await bd.ExecuteAsync(sql, soft)) > 0;
+            }
         }
 
         public async Task<PageDate<Soft>> GetList(PagesParams paramers)

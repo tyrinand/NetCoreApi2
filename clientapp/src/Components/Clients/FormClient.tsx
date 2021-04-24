@@ -3,15 +3,15 @@ import TextField from '@material-ui/core/TextField';
 import Slider from '@material-ui/core/Slider';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import {IMark, baseUrl, IComponentStatus, reactUrlClients, serverUrlClients} from '../../Interface/types';
+import {IMark, baseUrl, IComponentStatus, serverUrlClients} from '../../Interface/types';
 import { useState } from 'react';
-import {post, put} from '../../Utils/httpFetch';
+import {post, put, get} from '../../Utils/httpFetch';
 import { IClient, RouteParams } from './../../Interface/types';
 import { Alert } from '@material-ui/lab';
 import Snackbar from '@material-ui/core/Snackbar';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { RouteComponentProps } from 'react-router-dom';
-import { get } from './../../Utils/httpFetch';
+
 
 
 //работа с ползунком
@@ -27,10 +27,11 @@ function valueLabelFormat(value: number) {
 
 
 function FormClient(props : RouteComponentProps<RouteParams>) {
+    const defaultClietn : IClient = {mark : 1, name : "", id : 0};
 
     const [error, setError] = useState<Error | null>(null);
     const [status, setStatus] = useState<IComponentStatus >('idle');    
-    const [client, setClient] = useState<IClient>( {mark : 1, name : "", id : 0} );
+    const [client, setClient] = useState<IClient>( defaultClietn );
    
     const [editMode, setEditMode] = useState<boolean>(false);
     const [showMessage, setShowMessage] = useState(false); // вывод подсказки 
@@ -42,11 +43,11 @@ function FormClient(props : RouteComponentProps<RouteParams>) {
     const clientId = props.match.params.id;
     const currentPath = props.location.pathname;  
 
-    if((clientId != null || clientId != undefined) && currentPath.indexOf('edit') != -1 && editMode === false)
+    if( clientId && currentPath.indexOf('edit') !== -1 && editMode === false)
     {
         //если режим редактирование подгрузим данные
         setEditMode(true);
-        get<IClient>(targetUrl + '/' + clientId)
+        get<IClient>(`${targetUrl}/${clientId}`)
         .then( (response : any) => {
             setClient(response);
             setStatus('success');
@@ -112,7 +113,7 @@ function FormClient(props : RouteComponentProps<RouteParams>) {
         if( !CheckValide() )
             return;
        
-        editMode == true ?  UpdateClinet(client) : CreateClient(client);
+        editMode === true ?  UpdateClinet(client) : CreateClient(client);
     }
 
     const handleClose = (event?: React.SyntheticEvent, reason?: string) => {    
@@ -124,7 +125,7 @@ function FormClient(props : RouteComponentProps<RouteParams>) {
     }
 
     const CheckValide = () =>{
-        const value : boolean = client.name.length != 0;
+        const value : boolean = client.name.length !== 0;
         setValide(value);
         return value;
     }
@@ -148,7 +149,7 @@ if(status === "success" || status === 'idle')
                     <form autoComplete="off">
                         <TextField 
                             error={ (valide || client.name.length > 0) ? false : true}
-                            id="userName" 
+                            id="clientName" 
                             label="ФИО" 
                             placeholder="Введите ФИО клиента"
                             fullWidth
