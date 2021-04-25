@@ -24,6 +24,7 @@ namespace Api_work
             var connect = Configuration["ConnectionStrings:SaleDatabase"];
             services.AddTransient<IClientRepository, ClientRepository>(provider => new ClientRepository(connect));
             services.AddTransient<ISoftRepository, SoftRepository>(provider => new SoftRepository(connect));
+            services.AddTransient<ISaleRepository, SaleRepository>(provider => new SaleRepository(connect));
 
             services.AddControllersWithViews();
 

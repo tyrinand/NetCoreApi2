@@ -8,6 +8,9 @@ export const serverUrlClients : string = "api/client";
 export const reactUrlSofts :  string = "softs";
 export const serverUrlSofts: string = "api/soft";
 
+export const reactUrlSales  :  string = "sales";
+export const serverUrlSales : string = "api/sale";
+
 
 // интетефейс для слайдера 
 export interface IMark
@@ -30,6 +33,17 @@ export interface ISoft
     description : string,
     price : number,
     count : number
+}
+
+export interface ISalesView
+{
+    id : number,
+    softName : string,
+    priceOne : number, 
+    count : number,
+    summ : number
+    dateBuyStr : string,
+    clientName : string,
 }
 
 export type IComponentStatus = 'idle' | 'pending' | 'success' | 'error';

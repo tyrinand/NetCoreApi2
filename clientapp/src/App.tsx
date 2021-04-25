@@ -10,7 +10,7 @@ import Sales from './Components/Sales/Sales';
 import Clients from './Components/Clients/Clients';
 import './App.css';
 import FormClient from '../src/Components/Clients/FormClient';
-import { reactUrlClients, reactUrlSofts } from './Interface/types';
+import { reactUrlClients, reactUrlSales, reactUrlSofts } from './Interface/types';
 import FormSoft from './Components/Softs/FormSoft';
 
 
@@ -48,7 +48,7 @@ function App() {
         <AppBar  position="static">
           <Toolbar className={classes.toolbar}>
             <NavLink className={classes.link} exact to="/">Инфо</NavLink>
-            <NavLink className={classes.link} to="/sales">Продажи</NavLink>
+            <NavLink className={classes.link} to={`/${reactUrlSales}`} >Продажи</NavLink>
             <NavLink className={classes.link} to = {`/${reactUrlSofts}`}>Софт</NavLink>
             <NavLink className={classes.link} to = {`/${reactUrlClients}`} >Клиенты</NavLink>
         </Toolbar>
@@ -60,7 +60,6 @@ function App() {
     <Grid item md={8}>
     <Switch>
         <Route path="/"       component={Info}  exact/>
-        <Route path="/sales"  component={Sales} />
         
         <Route path = {`/${reactUrlClients}`}            component = {Clients} exact />
         <Route path = {`/${reactUrlClients}/page/:page`} component = {Clients} />
@@ -71,6 +70,9 @@ function App() {
         <Route path = {`/${reactUrlSofts}/page/:page`}  component = {Softs} />
         <Route path = {`/${reactUrlSofts}/create`}      component = {FormSoft} />
         <Route path = {`/${reactUrlSofts}/edit/:id`}    component = {FormSoft} />
+
+        <Route path = {`/${reactUrlSales}`}            component = {Sales} exact />
+        <Route path = {`/${reactUrlSales}/page/:page`} component = {Sales} />
 
         <Route  component={Info} />
       </Switch>

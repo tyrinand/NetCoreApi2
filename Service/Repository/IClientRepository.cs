@@ -55,7 +55,7 @@ namespace Api_work.Service.Repository
 
             using(var bd = new SqliteConnection(_connectStr))
             {
-                count = bd.QueryFirst<int>(sql);
+                count = await bd.QueryFirstAsync<int>(sql);
             }
 
             return new PageDate<Client>() 

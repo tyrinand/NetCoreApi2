@@ -100,9 +100,9 @@ namespace Api_work
 
             var sales = new List<Sale>()
             {
-                new Sale(){ Id = 0, Datebuy = DateTime.Now, Id_client = 0, Id_soft = 0, Count = 1, Summ = 0.0M },
-                new Sale(){ Id = 1, Datebuy = DateTime.Now, Id_client = 1, Id_soft = 1, Count = 1, Summ = 0.0M },
-                new Sale(){ Id = 2, Datebuy = DateTime.Now, Id_client = 2, Id_soft = 2, Count = 1, Summ = 0.0M },
+                new Sale(){ Id = 0, Datebuy = DateTime.Now, Id_client = 0, Id_soft = 0, Count = 1, Summ = 2500.0M },
+                new Sale(){ Id = 1, Datebuy = DateTime.Now, Id_client = 1, Id_soft = 1, Count = 1, Summ = 1000.0M },
+                new Sale(){ Id = 2, Datebuy = DateTime.Now, Id_client = 2, Id_soft = 2, Count = 1, Summ = 1500.0M },
             };
 
             var sqlCountSales = "Select count(*) from sales";

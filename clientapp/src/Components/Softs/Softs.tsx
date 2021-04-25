@@ -1,8 +1,7 @@
 import {useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, useHistory } from 'react-router-dom';
 import { ISoft, IComponentStatus, baseUrl, PagesData, PageParams, reactUrlSofts, serverUrlSofts} from '../../Interface/types';
-import { useHistory } from 'react-router-dom';
 import { get } from './../../Utils/httpFetch';
 import Grid from '@material-ui/core/Grid';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -22,7 +21,7 @@ import SoftModal from './SoftModal';
 const useStyles = makeStyles({
     titles :
     {
-        fontWeigt : "",
+        fontWeight : 'bold',
         width : "20%"
     },
     icons : {
