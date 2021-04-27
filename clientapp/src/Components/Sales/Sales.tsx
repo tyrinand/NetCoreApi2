@@ -17,6 +17,7 @@ import TableRow from '@material-ui/core/TableRow';
 import PaginationBtn from './../Buttons/PaginationBtn';
 import EditBtn from './../Buttons/EditBtn';
 import DeleteBtn from './../Buttons/DeleteBtn';
+import SaleModal from './SaleModal';
 
 const useStyles = makeStyles({
     titles : {
@@ -122,10 +123,10 @@ const Sales = (props : RouteComponentProps<PageParams>) => {
                                     <TableCell align="center">{item.dateBuyStr}</TableCell>
                                     <TableCell align="center">{item.clientName}</TableCell>
                                     <TableCell align="center">
-                                        {/* <SoftModal 
+                                        <SaleModal 
                                             iconClassName  = {classes.icons}
-                                            soft = {item}    
-                                        /> */}
+                                            sale = {item}    
+                                        />
                                         <EditBtn 
                                             id = {item.id}
                                             url = {reactUrlSales}

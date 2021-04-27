@@ -35,6 +35,7 @@ export interface ISoft
     count : number
 }
 
+//вывод списка
 export interface ISalesView
 {
     id : number,
@@ -44,6 +45,25 @@ export interface ISalesView
     summ : number
     dateBuyStr : string,
     clientName : string,
+}
+
+//отправка на сервер
+export interface ISale
+{
+    id : number,
+    datebuy : string | undefined | null,
+    count : number,
+    summ : number,
+    id_client : number | null,
+    id_soft : number | null,
+}
+
+// данные для формы
+export interface ISaleForm
+{
+    sale : ISale,
+    clients : Array<IClient>,
+    softs : Array<ISoft>
 }
 
 export type IComponentStatus = 'idle' | 'pending' | 'success' | 'error';

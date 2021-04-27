@@ -13,11 +13,7 @@ import Button from '@material-ui/core/Button';
 
 
 
-interface SoftFormProps {
-    id? : string,
-}
-
-function FormSoft(props : RouteComponentProps<SoftFormProps> ) {
+function FormSoft(props : RouteComponentProps<RouteParams> ) {
 
     const defaultSoft : ISoft = { id : 0, name : "", description : "", price : 0, count : 0 };
 

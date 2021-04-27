@@ -25,5 +25,30 @@ namespace Api_work.Controllers
         {
             return await _repo.GetList(pagesParams);
         }
+
+        [HttpGet]
+        [Route("/api/[controller]/GetSale/{id?}")]
+        public async Task<SaleForm> GetSale(int? id = null)
+        {
+            return await _repo.GetSale(id);
+        }
+
+        [HttpPost]
+        public async Task<bool> CreateSale(Sale sale)
+        {
+            return await _repo.Create(sale);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<bool> DeleteSale(int id)
+        {
+            return await _repo.Delete(id);
+        }
+
+        [HttpPut]
+        public async Task<bool> Update(Sale sale)
+        {
+            return await _repo.Update(sale);
+        }
     }
 }

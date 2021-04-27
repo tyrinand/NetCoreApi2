@@ -12,6 +12,7 @@ import './App.css';
 import FormClient from '../src/Components/Clients/FormClient';
 import { reactUrlClients, reactUrlSales, reactUrlSofts } from './Interface/types';
 import FormSoft from './Components/Softs/FormSoft';
+import FormSale from './Components/Sales/FormSale';
 
 
 const useStyles = makeStyles( (theme) =>  ({
@@ -73,6 +74,8 @@ function App() {
 
         <Route path = {`/${reactUrlSales}`}            component = {Sales} exact />
         <Route path = {`/${reactUrlSales}/page/:page`} component = {Sales} />
+        <Route path = {`/${reactUrlSales}/create`}     component = {FormSale} />
+        <Route path = {`/${reactUrlSales}/edit/:id`}   component = {FormSale} />
 
         <Route  component={Info} />
       </Switch>

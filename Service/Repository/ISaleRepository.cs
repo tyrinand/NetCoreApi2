@@ -10,6 +10,13 @@ namespace Api_work.Service.Repository
     public interface ISaleRepository
     {
         Task<PageDate<SaleView>> GetList(PagesParams paramers);
+        Task<SaleForm> GetSale(int? id);
+
+        Task<bool> Create(Sale sale);
+
+        Task<bool> Delete(int id);
+
+        Task<bool> Update(Sale sale);
     }
 
     public class SaleRepository : ISaleRepository
@@ -63,6 +70,93 @@ namespace Api_work.Service.Repository
                 PageSize = paramers.PageSize,
                 CountPage = (int)Math.Ceiling( count / (double) paramers.PageSize )
             };
+       }
+
+       public async Task<SaleForm> GetSale(int? id)
+       {
+           var sale = new Sale() { Id = 0, Datebuy = null, Id_client = null, Id_soft = null, Count = 0, Summ = 0 };
+           var sql = "";
+
+           if(id != null)
+           {
+               sql = @"SELECT s.Id, s.Datebuy as DateBuy, s.Count, s.Summ, s.Id_client, s.Id_soft FROM sales s WHERE Id = @id";
+               using(var  bd = new SqliteConnection(_connectStr))
+               {
+                   sale = await bd.QueryFirstAsync<Sale>(sql, new { id = id });
+               }
+           }
+
+            var clients = new List<Client>();
+            var softs = new List<Soft>();
+
+            sql = @"Select Id, Name, Mark  from clients order by Id";
+            
+            using(var bd = new SqliteConnection(_connectStr))
+            {
+                clients = (await bd.QueryAsync<Client>(sql)).AsList();
+            }
+
+            sql = "SELECT Id, Name, Description, Price, Count FROM softs order by Id";
+            using(var bd = new SqliteConnection(_connectStr))
+            {
+                softs = (await bd.QueryAsync<Soft>(sql)).AsList();
+            }
+
+            return new SaleForm()
+            {
+                sale = sale,
+                clients = clients,
+                softs = softs   
+            };
+       }
+
+       public async Task<bool> Create(Sale sale)
+       {
+           var sql = @"INSERT INTO sales (
+                      Datebuy,
+                      Id_client,
+                      Id_soft,
+                      Count,
+                      Summ
+                  )
+                  VALUES (
+                      @Datebuy,
+                      @Id_client,
+                      @Id_soft,
+                      @Count,
+                      @Summ
+                  );";
+
+           using(var bd = new SqliteConnection(_connectStr))
+           {
+               return (await bd.ExecuteAsync(sql, sale)) > 0;
+           }
+       }
+
+       public async Task<bool> Delete(int id)
+       {
+           var sql = @"delete from sales where Id = @id";
+
+           using(var bd = new SqliteConnection(_connectStr))
+           {
+               return (await bd.ExecuteAsync(sql, new{ id = id } )) > 0;
+           }
+       }
+
+       public async Task<bool> Update(Sale sale)
+       {
+           var sql = @"UPDATE sales
+                SET 
+                    Datebuy = @Datebuy,
+                    Id_client = @Id_client,
+                    Id_soft = @Id_soft,
+                    Count = @Count,
+                    Summ = @Summ
+                WHERE Id = @Id ";
+        using(var bd = new SqliteConnection(_connectStr))
+        {
+            return (await bd.ExecuteAsync(sql, sale )) > 0;
         }
+       }
     }
 }
