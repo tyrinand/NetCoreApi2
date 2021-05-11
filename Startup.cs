@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Api_work.Service.Repository;
+using Serilog;
 
 namespace Api_work
 {
@@ -54,6 +55,7 @@ namespace Api_work
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseSerilogRequestLogging();
             app.UseSpaStaticFiles();
 
             app.UseRouting();
