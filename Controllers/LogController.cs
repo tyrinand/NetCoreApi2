@@ -7,8 +7,6 @@ using Api_work.Service.Repository;
 namespace Api_work.Controllers
 {
     [ApiController]
-    [Route("/api/[controller]")]
-
     public class LogController : ControllerBase 
     {
 
@@ -23,13 +21,14 @@ namespace Api_work.Controllers
         }
 
         [HttpGet]
+        [Route("/api/[controller]/")]
         public async Task<PageDate<LogRow>> GetLog([FromQuery] PagesParams pagesParams)
         {
             return await _repo.GetList(pagesParams);
         }
 
         [HttpGet]
-        [Route("/api/Log/CreateError")]
+        [Route("/api/[controller]/CreateError")]
         public void CreateError()
         {
             throw new System.Exception("User Error");

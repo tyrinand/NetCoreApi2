@@ -7,7 +7,6 @@ using Api_work.Service.Repository;
 namespace Api_work.Controllers
 {
     [ApiController]
-    [Route("/api/[controller]")]
 
     public class SaleController : ControllerBase
     {
@@ -20,32 +19,35 @@ namespace Api_work.Controllers
             _repo = repository;
         }
 
+
         [HttpGet]
+        [Route("/api/[controller]")]
         public async Task<PageDate<SaleView>> GetSales([FromQuery] PagesParams pagesParams)
         {
             return await _repo.GetList(pagesParams);
         }
 
-        [HttpGet]
-        [Route("/api/[controller]/GetSale/{id?}")]
+        [HttpGet("/api/[controller]/{id?}")]
         public async Task<SaleForm> GetSale(int? id = null)
         {
             return await _repo.GetSale(id);
         }
 
         [HttpPost]
+        [Route("/api/[controller]")]
         public async Task<bool> CreateSale(Sale sale)
         {
             return await _repo.Create(sale);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("/api/[controller]/{id}")]
         public async Task<bool> DeleteSale(int id)
         {
             return await _repo.Delete(id);
         }
 
         [HttpPut]
+        [Route("/api/[controller]")]
         public async Task<bool> Update(Sale sale)
         {
             return await _repo.Update(sale);

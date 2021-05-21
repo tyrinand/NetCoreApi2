@@ -54,6 +54,7 @@ function App() {
             <NavLink className={classes.link} to = {`/${reactUrlSofts}`}>Софт</NavLink>
             <NavLink className={classes.link} to = {`/${reactUrlClients}`} >Клиенты</NavLink>
             <NavLink className={classes.link} to = {`/${reactUrlLogs}`} >Логи</NavLink>
+            <a href="/swagger/" target = "_blank"  className={classes.link}>Swagger</a>
         </Toolbar>
       </AppBar>
     </Grid>

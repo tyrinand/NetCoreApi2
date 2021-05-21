@@ -10,11 +10,13 @@
     <RootNamespace>Api_work</RootNamespace>
   </PropertyGroup>
 
+
   <ItemGroup>
     <PackageReference Include="dapper" Version="2.0.78" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="5.0.3" />
     <PackageReference Include="Microsoft.Data.SQLite" Version="5.0.4" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
   </ItemGroup>
 
   <ItemGroup>

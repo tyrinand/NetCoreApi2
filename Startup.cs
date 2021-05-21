@@ -7,6 +7,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Api_work.Service.Repository;
 using NetCoreApi2;
+using System;
+using System.Reflection;
+using System.IO;
 
 namespace Api_work
 {
@@ -22,6 +25,8 @@ namespace Api_work
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSwaggerGen();
+
             var connect = Configuration["ConnectionStrings:SaleDatabase"];
             var connectLog = Configuration["ConnectionStrings:LogDatabase"];
 
@@ -40,12 +45,13 @@ namespace Api_work
                 configuration.RootPath = "clientapp/build";
             });
 
+           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-           
+            
             
             if (env.IsDevelopment())
             {
@@ -61,6 +67,13 @@ namespace Api_work
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             //app.UseSerilogRequestLogging(opts=> opts.EnrichDiagnosticContext = LogHelper.EnrichFromRequest);
+
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
 
             app.UseSpaStaticFiles();
 
@@ -84,6 +97,9 @@ namespace Api_work
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
+
+           
+            
         }
     }
 }

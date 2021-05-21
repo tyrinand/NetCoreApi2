@@ -46,7 +46,7 @@ const FormSale = (props : RouteComponentProps<RouteParams>) => {
         saleId = "";
 
     useEffect( () => {
-        get<ISaleForm>(`${targetUrl}/GetSale/${saleId}`)
+        get<ISaleForm>(`${targetUrl}/${saleId}`)
         .then( (response : ISaleForm) => {
             if(editMode)
             {

@@ -14,6 +14,7 @@ namespace Api_work.Pages
     [ApiController]
 public class ErrorController : ControllerBase
 {
+    [HttpGet]
     [Route("/error-local-development")]
     public IActionResult ErrorLocalDevelopment([FromServices] IWebHostEnvironment webHostEnvironment)
     {
