@@ -11,6 +11,9 @@ export const serverUrlSofts: string = "api/soft";
 export const reactUrlSales  :  string = "sales";
 export const serverUrlSales : string = "api/sale";
 
+export const reactUrlLogs  :  string = "log";
+export const serverUrlLogs : string = "api/log";
+
 
 // интетефейс для слайдера 
 export interface IMark
@@ -18,6 +21,20 @@ export interface IMark
     value : number,
     label : string
 }
+
+export interface ILogs
+{
+    id : number,
+    
+    level : string,
+
+    message : string,
+
+    stackTrace : string,
+    
+    timeStampStr : string,
+}
+
 
 export interface IClient
 {
@@ -75,6 +92,10 @@ export interface RouteParams {
 
 export interface PageParams {
     page? : string
+}
+export interface PageParamsFilter {
+    page? : string,
+    filter? : string
 }
 
 export interface PagesData<T> {

@@ -10,9 +10,10 @@ import Sales from './Components/Sales/Sales';
 import Clients from './Components/Clients/Clients';
 import './App.css';
 import FormClient from '../src/Components/Clients/FormClient';
-import { reactUrlClients, reactUrlSales, reactUrlSofts } from './Interface/types';
+import { reactUrlClients, reactUrlLogs, reactUrlSales, reactUrlSofts } from './Interface/types';
 import FormSoft from './Components/Softs/FormSoft';
 import FormSale from './Components/Sales/FormSale';
+import Logs from './Components/Logs/Logs';
 
 
 const useStyles = makeStyles( (theme) =>  ({
@@ -52,6 +53,7 @@ function App() {
             <NavLink className={classes.link} to={`/${reactUrlSales}`} >Продажи</NavLink>
             <NavLink className={classes.link} to = {`/${reactUrlSofts}`}>Софт</NavLink>
             <NavLink className={classes.link} to = {`/${reactUrlClients}`} >Клиенты</NavLink>
+            <NavLink className={classes.link} to = {`/${reactUrlLogs}`} >Логи</NavLink>
         </Toolbar>
       </AppBar>
     </Grid>
@@ -76,6 +78,10 @@ function App() {
         <Route path = {`/${reactUrlSales}/page/:page`} component = {Sales} />
         <Route path = {`/${reactUrlSales}/create`}     component = {FormSale} />
         <Route path = {`/${reactUrlSales}/edit/:id`}   component = {FormSale} />
+
+        <Route path = {`/${reactUrlLogs}`}   component = {Logs} exact />
+        <Route path = {`/${reactUrlLogs}/page/:page`} component = {Logs} exact/>
+        <Route path = {`/${reactUrlLogs}/page/:page/filter/:filter`} component = {Logs} />
 
         <Route  component={Info} />
       </Switch>

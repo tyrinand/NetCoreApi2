@@ -25,5 +25,7 @@ namespace Api_work.Models
             }
         }
 
+        public string Filter {get; set;} = "All";
+
     }
 }

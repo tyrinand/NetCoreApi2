@@ -6,7 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Api_work.Service.Repository;
-using Serilog;
+using NetCoreApi2;
 
 namespace Api_work
 {
@@ -23,9 +23,12 @@ namespace Api_work
         public void ConfigureServices(IServiceCollection services)
         {
             var connect = Configuration["ConnectionStrings:SaleDatabase"];
+            var connectLog = Configuration["ConnectionStrings:LogDatabase"];
+
             services.AddTransient<IClientRepository, ClientRepository>(provider => new ClientRepository(connect));
             services.AddTransient<ISoftRepository, SoftRepository>(provider => new SoftRepository(connect));
             services.AddTransient<ISaleRepository, SaleRepository>(provider => new SaleRepository(connect));
+            services.AddTransient<ILogRepository, LogRepository>(provider => new LogRepository(connectLog));
 
             services.AddControllersWithViews();
 
@@ -42,23 +45,28 @@ namespace Api_work
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+           
+            
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                 app.UseExceptionHandler("/error-local-development");
             }
             else
             {
-                app.UseExceptionHandler("/Error");
+                app.UseExceptionHandler("/error-local-development");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseSerilogRequestLogging();
+            //app.UseSerilogRequestLogging(opts=> opts.EnrichDiagnosticContext = LogHelper.EnrichFromRequest);
+
             app.UseSpaStaticFiles();
 
             app.UseRouting();
+
+            app.UseRequestResponseLogging();
 
             app.UseEndpoints(endpoints =>
             {

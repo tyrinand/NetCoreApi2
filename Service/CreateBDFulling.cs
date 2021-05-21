@@ -10,13 +10,18 @@ namespace Api_work
 {
     public static class CreateBDFulling
     {
-        public static void Full()
+        private static string conBd;
+        private static string conLogs;
+
+        static CreateBDFulling()
         {
             var builder = new ConfigurationBuilder().AddJsonFile("appsettings.json");
             var appConfiguration = builder.Build();
-            string con = appConfiguration["ConnectionStrings:SaleDatabase"];
-
-
+            conBd = appConfiguration["ConnectionStrings:SaleDatabase"];
+            conLogs = appConfiguration["ConnectionStrings:LogDatabase"];
+        }
+        public static void FullBd()
+        {
             var sqlTables = @"CREATE TABLE IF NOT EXISTS clients (
                 Id INTEGER PRIMARY KEY AUTOINCREMENT,
                 Name TEXT NOT NULL,
@@ -38,7 +43,7 @@ namespace Api_work
                 Summ TEXT NOT NULL
             );";
 
-            using(var bd = new SqliteConnection(con))
+            using(var bd = new SqliteConnection(conBd))
             {
                 bd.Execute(sqlTables);
             }
@@ -55,7 +60,7 @@ namespace Api_work
             };
             var sqlCountSoft = "Select count(*) from softs";
 
-            using(var bd = new SqliteConnection(con))
+            using(var bd = new SqliteConnection(conBd))
             {
                 countSoft = bd.QueryFirst<int>(sqlCountSoft);
             }
@@ -65,7 +70,7 @@ namespace Api_work
                 var sqlInsertSofts = "INSERT INTO softs (Id, Name, Description, Price, Count) VALUES (@id, @name, @description, @price, @count);";
                 foreach(var soft in softs)
                 {
-                    using(var bd = new SqliteConnection(con))
+                    using(var bd = new SqliteConnection(conBd))
                     {
                         bd.Execute(sqlInsertSofts, new { id = soft.Id, name = soft.Name, description = soft.Description, price = soft.Price, count = soft.Count } );
                     }
@@ -80,7 +85,7 @@ namespace Api_work
             };
             var sqlCountClient = "Select count(*) from clients";
             
-            using(var bd = new SqliteConnection(con))
+            using(var bd = new SqliteConnection(conBd))
             {
                 countClient  = bd.QueryFirst<int>(sqlCountClient);
             }
@@ -91,7 +96,7 @@ namespace Api_work
 
                 foreach(var client in clients)
                 {
-                    using(var bd = new SqliteConnection(con))
+                    using(var bd = new SqliteConnection(conBd))
                     {
                         bd.Execute(sqlInsertClient, new { id = client.Id, name = client.Name, mark = client.Mark } );
                     }
@@ -107,7 +112,7 @@ namespace Api_work
 
             var sqlCountSales = "Select count(*) from sales";
 
-            using(var bd = new SqliteConnection(con))
+            using(var bd = new SqliteConnection(conBd))
             {
                 countSale = bd.QueryFirst<int>(sqlCountSales);
             }
@@ -119,14 +124,71 @@ namespace Api_work
 
                 foreach(var sale in sales)
                 {
-                    using(var bd = new SqliteConnection(con))
+                    using(var bd = new SqliteConnection(conBd))
                     {
                          bd.Execute(sqlInsertSale, new { id = sale.Id, datebuy = sale.Datebuy, id_client = sale.Id_client,  id_soft = sale.Id_soft, count = sale.Count, summ = sale.Summ } );
                     }
                 }
             }
-
-
         }
+        public static void FullLogs()
+        {
+            var sqlCreateLog = @"CREATE TABLE IF NOT EXISTS Logs (
+                Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                DateTime  TEXT NOT NULL,
+                Level TEXT NOT NULL,
+                Message TEXT NOT NULL,
+                StackTrace TEXT NULL
+            );";
+
+            using(var bd = new SqliteConnection(conLogs))
+            {
+                bd.Execute(sqlCreateLog);
+            }
+
+            CheckCountLog();
+        }
+        private static void CheckCountLog()
+        {
+            int countLogs = 0;
+            var sqlCountLogs = "Select count(*) from Logs";
+            using(var bd = new SqliteConnection(conLogs))
+            {
+                countLogs = bd.QueryFirst<int>(sqlCountLogs);
+            }
+
+            if(countLogs > 10000)
+            {
+                var sqlClearLog = @"Delete from Logs";
+                using(var bd = new SqliteConnection(conLogs))
+                {
+                    bd.Execute(sqlClearLog);
+                }
+            }
+        }
+
+        public static void WriteLog(string level, string message,  string stackTrace = null)
+        {
+            CheckCountLog();
+            
+            var sql = @"INSERT INTO Logs (
+                     DateTime,
+                     Level,
+                     Message,
+                     StackTrace
+                 )
+                 VALUES (
+                     @DateTime,
+                     @Level,
+                     @Message,
+                     @stackTrace
+                 );";
+
+            using(var bd = new SqliteConnection(conLogs))
+            {
+                bd.Execute(sql, new { DateTime = DateTime.Now, Level = level,  Message = message, stackTrace = stackTrace});
+            }
+        }
+
     }
 }

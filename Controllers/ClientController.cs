@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Api_work.Models;
 using Api_work.Service.Repository;
-
 namespace Api_work.Controllers
 {
     [ApiController]
@@ -14,7 +13,8 @@ namespace Api_work.Controllers
     public class ClientController : ControllerBase
     {
         private readonly ILogger<ClientController> _logger;
-        private IClientRepository _repo;
+        private readonly IClientRepository _repo;
+
         public ClientController(ILogger<ClientController> logger, IClientRepository repository)
         {
             _logger = logger;

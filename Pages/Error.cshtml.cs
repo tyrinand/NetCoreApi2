@@ -6,26 +6,26 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Diagnostics;
 
 namespace Api_work.Pages
 {
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public class ErrorModel : PageModel
+    [ApiController]
+public class ErrorController : ControllerBase
+{
+    [Route("/error-local-development")]
+    public IActionResult ErrorLocalDevelopment([FromServices] IWebHostEnvironment webHostEnvironment)
     {
-        private readonly ILogger<ErrorModel> _logger;
 
-        public ErrorModel(ILogger<ErrorModel> logger)
-        {
-            _logger = logger;
-        }
+        var context = HttpContext.Features.Get<IExceptionHandlerFeature>();
+        var error = context.Error;
 
-        public string RequestId { get; set; }
+        CreateBDFulling.WriteLog("Error", error.Message, error.StackTrace);
 
-        public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
-
-        public void OnGet()
-        {
-            RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
-        }
+        return Problem(
+            detail: error.StackTrace,
+            title: error.Message);
     }
+}
 }
