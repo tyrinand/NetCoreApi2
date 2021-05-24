@@ -1,5 +1,5 @@
 import { RouteComponentProps } from 'react-router-dom';
-import { baseUrl, IComponentStatus, ISoft, RouteParams, serverUrlSofts } from './../../Interface/types';
+import { IComponentStatus, ISoft, RouteParams, serverUrlSofts } from './../../Interface/types';
 import { useState } from 'react';
 import {post, put, get} from '../../Utils/httpFetch';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -24,6 +24,8 @@ function FormSoft(props : RouteComponentProps<RouteParams> ) {
     const [valide, setValide] = useState<boolean>(true);
     const [soft, setSoft] = useState<ISoft>(defaultSoft);
 
+    const baseUrl = window.location.origin;
+    
     const targetUrl : string = `${baseUrl}/${serverUrlSofts}`;
 
     const softId = props.match.params?.id;

@@ -1,5 +1,5 @@
 import DeleteIcon from '@material-ui/icons/Delete';
-import {baseUrl, IComponentStatus} from './../../Interface/types';
+import {IComponentStatus} from './../../Interface/types';
 import {deleteData} from './../../Utils/httpFetch';
 
 interface IBtnDeleteProprs {
@@ -14,6 +14,9 @@ interface IBtnDeleteProprs {
 const DeleteBtn = (props : IBtnDeleteProprs) =>{
 
 const handelClick = () =>{
+
+    const baseUrl = window.location.origin;
+    
     props.setStatus('pending');
 
         deleteData<boolean>(`${baseUrl}/${props.url}/${props.id}`)

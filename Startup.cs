@@ -1,15 +1,11 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Api_work.Service.Repository;
 using NetCoreApi2;
-using System;
-using System.Reflection;
-using System.IO;
 
 namespace Api_work
 {
@@ -42,7 +38,7 @@ namespace Api_work
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
-                configuration.RootPath = "clientapp/build";
+                configuration.RootPath = "ClientApp/build";
             });
 
            
@@ -51,23 +47,8 @@ namespace Api_work
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            
-            
-            if (env.IsDevelopment())
-            {
-                 app.UseExceptionHandler("/error-local-development");
-            }
-            else
-            {
-                app.UseExceptionHandler("/error-local-development");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
-
-            app.UseHttpsRedirection();
+            app.UseExceptionHandler("/error-local-development");
             app.UseStaticFiles();
-            //app.UseSerilogRequestLogging(opts=> opts.EnrichDiagnosticContext = LogHelper.EnrichFromRequest);
-
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>

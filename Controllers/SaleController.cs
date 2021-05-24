@@ -27,7 +27,7 @@ namespace Api_work.Controllers
             return await _repo.GetList(pagesParams);
         }
 
-        [HttpGet("/api/[controller]/{id?}")]
+        [HttpGet("/api/SaleForm/{id?}")]
         public async Task<SaleForm> GetSale(int? id = null)
         {
             return await _repo.GetSale(id);

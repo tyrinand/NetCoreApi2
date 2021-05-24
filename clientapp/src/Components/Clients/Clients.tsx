@@ -1,6 +1,6 @@
 import { get } from './../../Utils/httpFetch';
 import {useState, useEffect } from 'react';
-import {IClient, IComponentStatus, baseUrl, PagesData, PageParams, reactUrlClients, serverUrlClients} from '../../Interface/types';
+import {IClient, IComponentStatus, PagesData, PageParams, reactUrlClients, serverUrlClients} from '../../Interface/types';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -44,9 +44,13 @@ const Clients = (props : RouteComponentProps<PageParams>) => {
     const [countPage, setCountPage] = useState<number>(0);
     const classes = useStyles();
 
+    const baseUrl = window.location.origin;
+    
+    const targetUrl = `${baseUrl}/${serverUrlClients}/?PageNumber=${page}&PageSize=${pageSize}`;
+
     useEffect( () => {
      
-        get<PagesData<IClient>>( `${baseUrl}/${serverUrlClients}/?PageNumber=${page}&PageSize=${pageSize}`)
+        get<PagesData<IClient>>( targetUrl)
         .then( (response : PagesData<IClient> ) => {
             setClients(response.items);
             setCountPage(response.countPage);
@@ -56,7 +60,7 @@ const Clients = (props : RouteComponentProps<PageParams>) => {
             setError(error);
             setStatus('error');
         })
-    }, [page] )
+    }, [targetUrl] )
 
 
     const dropInList = (id : number) : void => {

@@ -1,4 +1,4 @@
-import { IComponentStatus, PageParamsFilter, ILogs, baseUrl, serverUrlLogs, reactUrlLogs} from "../../Interface/types"
+import { IComponentStatus, PageParamsFilter, ILogs, serverUrlLogs, reactUrlLogs} from "../../Interface/types"
 import {useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { RouteComponentProps, useHistory} from 'react-router-dom';
@@ -32,6 +32,8 @@ const useStyles = makeStyles({
 
 const Logs = (props : RouteComponentProps<PageParamsFilter>) =>{
 
+    const baseUrl = window.location.origin;
+    
     let history = useHistory();
 
     const paramPage = props.match.params?.page;
@@ -46,9 +48,10 @@ const Logs = (props : RouteComponentProps<PageParamsFilter>) =>{
     const [status, setStatus] = useState<IComponentStatus>('idle');
     const [countPage, setCountPage] = useState<number>(0);
     const classes = useStyles();
+    const targetUrl = `${baseUrl}/${serverUrlLogs}/?PageNumber=${page}&PageSize=${pageSize}&Filter=${filter}`;
 
     useEffect( () => {
-        get<PagesData<ILogs>>( `${baseUrl}/${serverUrlLogs}/?PageNumber=${page}&PageSize=${pageSize}&Filter=${filter}` )
+        get<PagesData<ILogs>>( targetUrl )
         .then( (response : PagesData<ILogs>) =>{
             SetLogs(response.items);
             setCountPage(response.countPage);
@@ -58,7 +61,7 @@ const Logs = (props : RouteComponentProps<PageParamsFilter>) =>{
             setError(error);
             setStatus('error');
         })
-    }, [page, filter]);
+    }, [targetUrl]);
 
     const handelFilter = (e : React.ChangeEvent<HTMLInputElement>) =>{
         const value = e.target.value;

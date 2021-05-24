@@ -19,9 +19,12 @@
 http://localhost:5000/api/Sale/
  
 ###
-http://localhost:5000/api/Log/GetLog/1
+http://localhost:5000/api/SaleForm/
  
 
 ###
  http://localhost:5000/api/Log/?PageNumber=1&PageSize=2&Filter=All
  
+
+###
+ https://localhost:5001/api/SaleForm/

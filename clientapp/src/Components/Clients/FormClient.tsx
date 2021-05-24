@@ -3,7 +3,7 @@ import TextField from '@material-ui/core/TextField';
 import Slider from '@material-ui/core/Slider';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import {IMark, baseUrl, IComponentStatus, serverUrlClients} from '../../Interface/types';
+import {IMark, IComponentStatus, serverUrlClients} from '../../Interface/types';
 import { useState } from 'react';
 import {post, put, get} from '../../Utils/httpFetch';
 import { IClient, RouteParams } from './../../Interface/types';
@@ -37,7 +37,8 @@ function FormClient(props : RouteComponentProps<RouteParams>) {
     const [showMessage, setShowMessage] = useState(false); // вывод подсказки 
     const [valide, setValide] = useState<boolean>(true); // валидность формы 
 
-
+    const baseUrl = window.location.origin;
+    
     const targetUrl : string = `${baseUrl}/${serverUrlClients}`;
 
     const clientId = props.match.params.id;

@@ -1,4 +1,4 @@
-import { IComponentStatus, PageParams, ISalesView, baseUrl, serverUrlSales, reactUrlSales} from "../../Interface/types"
+import { IComponentStatus, PageParams, ISalesView, serverUrlSales, reactUrlSales} from "../../Interface/types"
 import {useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { RouteComponentProps, useHistory} from 'react-router-dom';
@@ -31,6 +31,8 @@ const useStyles = makeStyles({
 
 const Sales = (props : RouteComponentProps<PageParams>) => {
 
+    const baseUrl = window.location.origin;
+
     let history = useHistory();
 
     const paramPage = props.match.params?.page;
@@ -43,8 +45,10 @@ const Sales = (props : RouteComponentProps<PageParams>) => {
     const [countPage, setCountPage] = useState<number>(0);
     const classes = useStyles();
 
+    const targetUrl =  `${baseUrl}/${serverUrlSales}/?PageNumber=${page}&PageSize=${pageSize}`;
+
     useEffect( () => {
-        get<PagesData<ISalesView>>( `${baseUrl}/${serverUrlSales}/?PageNumber=${page}&PageSize=${pageSize}` )
+        get<PagesData<ISalesView>>(targetUrl )
         .then( (response : PagesData<ISalesView>) =>{
             setSales(response.items);
             setCountPage(response.countPage);
@@ -54,7 +58,7 @@ const Sales = (props : RouteComponentProps<PageParams>) => {
             setError(error);
             setStatus('error');
         })
-    }, [page]);
+    }, [targetUrl]);
 
     const dropInList = (id : number) : void => {
         if(sales != null)

@@ -1,7 +1,7 @@
 import {useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { RouteComponentProps, useHistory } from 'react-router-dom';
-import { ISoft, IComponentStatus, baseUrl, PagesData, PageParams, reactUrlSofts, serverUrlSofts} from '../../Interface/types';
+import { ISoft, IComponentStatus, PagesData, PageParams, reactUrlSofts, serverUrlSofts} from '../../Interface/types';
 import { get } from './../../Utils/httpFetch';
 import Grid from '@material-ui/core/Grid';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -42,6 +42,7 @@ const Softs = (props : RouteComponentProps<PageParams>) => {
     const [status, setStatus] = useState<IComponentStatus>('idle');
     const [countPage, setCountPage] = useState<number>(0);
     const classes = useStyles();
+    const baseUrl = window.location.origin;
 
     useEffect( () => {
         get<PagesData<ISoft>>( `${baseUrl}/${serverUrlSofts}/?PageNumber=${page}&PageSize=${pageSize}` )

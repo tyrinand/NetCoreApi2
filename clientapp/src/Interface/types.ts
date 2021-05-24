@@ -1,7 +1,5 @@
 import NumberFormat from 'react-number-format';
 
-export const baseUrl = 'https://localhost:5001';
-
 export const reactUrlClients :  string = "clients";
 export const serverUrlClients : string = "api/client";
 

@@ -1,5 +1,5 @@
 import { RouteComponentProps } from "react-router-dom";
-import { baseUrl, IComponentStatus, ISale, ISoft, RouteParams, serverUrlSales } from "../../Interface/types";
+import { IComponentStatus, ISale, ISoft, RouteParams, serverUrlSales } from "../../Interface/types";
 import { ISaleForm, IClient } from './../../Interface/types';
 import {useState, useEffect} from 'react';
 import {post, put, get} from '../../Utils/httpFetch';
@@ -28,11 +28,11 @@ const FormSale = (props : RouteComponentProps<RouteParams>) => {
     const [softs, setSoft] = useState<Array<ISoft>>([]);
     const [priceOne, setPriceOne] = useState<number|null>(null);
 
+    const baseUrl = window.location.origin;
 
 
 
-
-    const targetUrl : string = `${baseUrl}/${serverUrlSales}`;
+   
 
     let saleId  = props.match.params?.id;
     const currentPath = props.location.pathname;
@@ -45,8 +45,13 @@ const FormSale = (props : RouteComponentProps<RouteParams>) => {
     if(!saleId)
         saleId = "";
 
+    const getFormUrl  : string = `${baseUrl}/api/SaleForm/${saleId}`;
+
+    const targetUrl  : string = `${baseUrl}/${serverUrlSales}`;
+
+
     useEffect( () => {
-        get<ISaleForm>(`${targetUrl}/${saleId}`)
+        get<ISaleForm>(getFormUrl)
         .then( (response : ISaleForm) => {
             if(editMode)
             {
@@ -64,7 +69,7 @@ const FormSale = (props : RouteComponentProps<RouteParams>) => {
             setError(error);
             setStatus('success');
         })
-    }, [saleId]);
+    }, [getFormUrl, editMode]);
 
    
 
