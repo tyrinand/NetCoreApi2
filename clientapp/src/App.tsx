@@ -46,7 +46,7 @@ function App() {
     <div className={classes.root}>
       <CssBaseline />
       <Grid container spacing={0}  justify="center" >
-      <Grid item md={8}  >
+      <Grid item lg={8}  md={12}  xs={12} sm={12} >
         <AppBar  position="static">
           <Toolbar className={classes.toolbar}>
             <NavLink className={classes.link} exact to="/">Инфо</NavLink>
@@ -61,7 +61,7 @@ function App() {
   </Grid>
   <br/>
   <Grid container spacing={0} justify="center">
-    <Grid item md={8}>
+    <Grid item lg={8}  md={12}  xs={12} sm={12}>
     <Switch>
         <Route path="/"       component={Info}  exact/>
         
@@ -90,7 +90,7 @@ function App() {
   </Grid>
       <footer className={classes.footer}>
       <Grid container spacing={0} justify="center">
-        <Grid item md={8}>
+        <Grid item lg={8}  md={12}  xs={12} sm={12}>
           Тестовый проект
         </Grid>
       </Grid>

@@ -69,6 +69,32 @@ const Logs = (props : RouteComponentProps<PageParamsFilter>) =>{
         history.push(url);
     }
 
+    const radioGroup = <FormControl component="fieldset" size="small">
+    <RadioGroup row 
+        aria-label="position" 
+        name="position" 
+        defaultValue={filter}
+        onChange = {handelFilter}
+    >
+        <FormControlLabel
+            value="All"
+            control={
+                <Radio color="primary" />
+            }
+            label="Все"
+        />
+         <FormControlLabel
+            value="Info"
+            control={<Radio color="primary" />}
+            label="Инфо"
+        />
+        <FormControlLabel
+            value="Error"
+            control={<Radio color="primary" />}
+            label="Ошибки"
+        />
+    </RadioGroup>
+</FormControl>;
 
     if(status === 'error')
         return <span>{error?.stack}</span>;
@@ -85,10 +111,15 @@ const Logs = (props : RouteComponentProps<PageParamsFilter>) =>{
     if(status === "success" && logs != null && logs.length === 0)
     {
         return(
-            <Grid container spacing={0} justify="center">
-                <span>Нет данных</span>
-                <br/> <br/>
-            </Grid>
+            <>
+                <Grid container spacing={0} justify="flex-start">
+                    {radioGroup}
+                </Grid>
+                <br/>
+                <Grid container spacing={0} justify="center">
+                    <span>Нет данных</span>
+                </Grid>
+            </>
         );
     }
 
@@ -96,35 +127,7 @@ const Logs = (props : RouteComponentProps<PageParamsFilter>) =>{
     {
         return (
             <>
-            <FormControl component="fieldset" size="small">
-                <RadioGroup row 
-                    aria-label="position" 
-                    name="position" 
-                    defaultValue="All"  
-                    onChange = {handelFilter}
-                >
-                    <FormControlLabel
-                        value="All"
-                        control={
-                            <Radio color="primary" />
-                        }
-                        label="Все"
-                    />
-                     <FormControlLabel
-                        value="Info"
-                        control={<Radio color="primary" />}
-                        label="Инфо"
-                    />
-                    <FormControlLabel
-                        value="Error"
-                        control={<Radio color="primary" />}
-                        label="Ошибки"
-                    />
-                </RadioGroup>
-            </FormControl>
-
-
-
+            {radioGroup}
                 <TableContainer component={Paper}>
                     <Table  size="small">
                         <TableHead>
